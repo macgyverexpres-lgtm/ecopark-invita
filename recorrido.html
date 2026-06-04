@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IN VITA - EcoParK Manos en Paz</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#F4E4BC;font-family:Georgia;overflow-x:hidden}
+
+.umbral{text-align:center;padding:120px 20px;min-height:100vh;background:radial-gradient(circle at center,#0d2818 0%,#000 100%)}
+h1{font-size:6rem;background:linear-gradient(45deg,#D4AF37,#E8D4A0,#D4AF37);-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:brillo 3s infinite}
+@keyframes brillo{0%,100%{filter:drop-shadow(0 0 20px #D4AF37)}50%{filter:drop-shadow(0 0 40px #D4AF37)}}
+.frase{font-size:1.5rem;margin:40px auto;max-width:700px;color:#C8E6C9}
+.btn{padding:25px 60px;background:linear-gradient(45deg,#2E7D32,#4CAF50);color:white;border-radius:50px;font-size:1.3rem;border:2px solid #D4AF37;cursor:pointer;display:inline-block;margin-top:40px;text-decoration:none}
+
+#biblioteca{padding:100px 20px;min-height:100vh;background:linear-gradient(180deg,#0a0a0a 0%,#0d1a0d 100%)}
+.titulo-biblio{text-align:center;font-size:2.8rem;color:#D4AF37;margin-bottom:80px}
+
+.estante{background:linear-gradient(180deg,#2E7D32 0%,#1B5E20 100%);height:180px;margin:70px auto;max-width:1000px;border-radius:12px;box-shadow:0 25px 50px rgba(0,0,0,0.9);border:4px solid #388E3C;position:relative;display:flex;justify-content:space-around;align-items:flex-end;padding:0 20px}
+
+.libro{width:160px;height:120px;border-radius:8px 5px 5px 8px;cursor:pointer;position:relative;box-shadow:5px 5px 15px rgba(0,0,0,0.8);transition:0.4s;animation:flotar 3.5s ease-in-out infinite;animation-delay:var(--delay);display:flex;align-items:center;justify-content:center;padding:10px}
+.libro:hover{transform:translateY(-35px) scale(1.15);box-shadow:0 25px 50px rgba(255,255,255,0.3)}
+@keyframes flotar{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+
+.titulo-libro{color:white;font-weight:bold;font-size:0.9rem;text-shadow:2px 2px 4px black;text-align:center;line-height:1.4;padding:5px}
+
+.libro:nth-child(1){background:linear-gradient(135deg,#D4AF37 0%,#B8860B 100%)}
+.libro:nth-child(2){background:linear-gradient(135deg,#2E7D32 0%,#1B5E20 100%)}
+.libro:nth-child(3){background:linear-gradient(135deg,#8B4513 0%,#5D2F0A 100%)}
+.libro:nth-child(4){background:linear-gradient(135deg,#C41E3A 0%,#8B0000 100%)}
+.libro:nth-child(5){background:linear-gradient(135deg,#1E3A8A 0%,#0F172A 100%)}
+.libro:nth-child(6){background:linear-gradient(135deg,#8B5A2B 0%,#5C3D1E 100%)}
+.libro:nth-child(7){background:linear-gradient(135deg,#4A148C 0%,#2E0854 100%)}
+.libro:nth-child(8){background:linear-gradient(135deg,#2C5F2D 0%,#1A3A1B 100%)}
+.libro:nth-child(9){background:linear-gradient(135deg,#B22222 0%,#7A0A0A 100%)}
+.libro:nth-child(10){background:linear-gradient(135deg,#0F4C75 0%,#083654 100%)}
+.libro:nth-child(11){background:linear-gradient(135deg,#FFD700 0%,#FFA500 100%)}
+
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.98);z-index:1000}
+.modal-contenido{background:linear-gradient(135deg,#0a0a0a 0%,#1a1a1a 100%);border:4px solid #D4AF37;border-radius:25px;padding:60px 85px;margin:2% auto;width:90%;max-width:750px;max-height:92vh;overflow-y:auto;animation:puff 0.5s;position:relative}
+@keyframes puff{0%{transform:scale(0.6) rotateY(15deg);opacity:0}100%{transform:scale(1) rotateY(0);opacity:1}}
+.cerrar{position:absolute;top:20px;right:30px;font-size:45px;cursor:pointer;color:#D4AF37}
+.flecha{position:absolute;top:50%;transform:translateY(-50%);font-size:60px;color:#D4AF37;cursor:pointer;padding:25px}
+.flecha:hover{color:#F4E4BC;text-shadow:0 0 25px #D4AF37}
+.flecha.izq{left:15px}
+.flecha.der{right:15px}
+
+.modal-contenido h2{color:#D4AF37;font-size:2.5rem;text-align:center;margin-bottom:15px}
+.modal-contenido h3{color:#C8E6C9;font-size:1.4rem;text-align:center;margin-bottom:35px;font-style:italic}
+.modal-contenido p{font-size:1.2rem;line-height:1.9;margin-bottom:25px;color:#F4E4BC}
+.descripcion{font-size:1.1rem;color:#B0BEC5;margin-bottom:20px;text-align:center}
+.mensaje-central{font-size:1.4rem;color:#D4AF37;text-align:center;margin:40px 0;font-style:italic;border-left:4px solid #2E7D32;padding-left:25px;background:rgba(46,125,50,0.1)}
+
+.imagen-estacion{width:100%;max-height:450px;object-fit:cover;border-radius:15px;border:4px solid #D4AF37;margin-top:35px;box-shadow:0 15px 40px rgba(212,175,55,0.4)}
+.pie-foto{text-align:center;font-size:1rem;color:#D4AF37;font-style:italic;margin-top:12px;margin-bottom:25px;letter-spacing:1px}
+</style>
+</head>
+<body>
+
+<section class="umbral">
+  <h1>IN VITA</h1>
+  <p class="frase">EcoParK "Manos en Paz" · Donde cada paso es un eco, y cada eco, un libro por abrir.</p>
+  <a class="btn" onclick="document.getElementById('biblioteca').scrollIntoView({behavior:'smooth'})">ENTRA A LA BIBLIOTECA</a>
+</section>
+
+<section id="biblioteca">
+  <h2 class="titulo-biblio">📚 11 ESTACIONES - EL RECORRIDO COMPLETO</h2>
+  
+  <div class="estante">
+    <div class="libro" style="--delay:0s" onclick="abrirModal(1)"><div class="titulo-libro">LA ESTACIÓN<br>DE LOS RELATOS</div></div>
+    <div class="libro" style="--delay:0.3s" onclick="abrirModal(2)"><div class="titulo-libro">EL TRANVÍA<br>EL CARTERO</div></div>
+    <div class="libro" style="--delay:0.6s" onclick="abrirModal(3)"><div class="titulo-libro">ECOPARC<br>SENDEROS</div></div>
+    <div class="libro" style="--delay:0.9s" onclick="abrirModal(4)"><div class="titulo-libro">LA SIEMBRA</div></div>
+    <div class="libro" style="--delay:1.2s" onclick="abrirModal(5)"><div class="titulo-libro">BOSQUE DE LA<br>ALEGRÍA ANCESTRAL</div></div>
+  </div>
+  
+  <div class="estante">
+    <div class="libro" style="--delay:1.5s" onclick="abrirModal(6)"><div class="titulo-libro">FUENTE DE VIDA<br>LAGUNA PARAÍSO</div></div>
+    <div class="libro" style="--delay:1.8s" onclick="abrirModal(7)"><div class="titulo-libro">EL FOGÓN<br>DEL CARTERO</div></div>
+    <div class="libro" style="--delay:2.1s" onclick="abrirModal(8)"><div class="titulo-libro">EL CARTERO<br>DEL PESEBRE</div></div>
+    <div class="libro" style="--delay:2.4s" onclick="abrirModal(9)"><div class="titulo-libro">RUEDA DEL TIEMPO<br>SANADOR</div></div>
+    <div class="libro" style="--delay:2.7s" onclick="abrirModal(10)"><div class="titulo-libro">EL CIGUAPARK<br>ECOCOMUNIDAD</div></div>
+  </div>
+  
+  <div class="estante" style="justify-content:center">
+    <div class="libro" style="--delay:3s;width:170px;height:125px" onclick="abrirModal(11)"><div class="titulo-libro">EL UMBRAL<br>DEL REGRESO</div></div>
+  </div>
+</section>
+
+<!-- MODAL 1 -->
+<div id="modal1" class="modal" onclick="if(event.target.id=='modal1')cerrarModal()">
+  <div class="modal-contenido">
+    <span class="flecha izq" onclick="cambiarModal(-1)">&#10094;</span>
+    <span class="flecha der" onclick="cambiarModal(1)">&#10095;</span>
+    <span class="cerrar" onclick="cerrarModal()">&times;</span>
+    <h2>Estación 1</h2>
+    <h3>LA ESTACIÓN DE LOS RELATOS</h3>
+    <p class="descripcion">Donde el viaje comienza y la memoria despierta</p>
+    <p class="mensaje-central">❝ El primer contacto, la puerta abierta al asombro ❞</p>
+    <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCAAMAAkDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAX/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwAfwA//9k=" alt="Entrada del Hall" class="imagen-estacion">
+    <p class="pie-foto">La Entrada del Hall - Umbral de IN VITA</p>
+  </div>
+</div>
+
+<!-- MODAL 2 -->
+<div id="modal2" class="modal" onclick="if(event.target.id=='modal2')cerrarModal()">
+  <div class="modal-contenido">
+    <span class="flecha izq" onclick="cambiarModal(-1)">&#10094;</span>
+    <span class="flecha der" onclick="cambiarModal(1)">&#10095;</span>
+    <span class="cerrar" onclick="cerrarModal()">&times;</span>
+    <h2>Estación 2</h2>
+    <h3>EL TRANVÍA EL CARTERO</h3>
+    <p class="descripcion">El viaje que te lleva hacia adentro</p>
+    <p class="mensaje-central">❝ Moverse entre la selva mientras el mensaje viaja contigo ❞</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==" alt="Tranvía El Cartero" class="imagen-estacion">
+    <p class="pie-foto">El Tranvía El Cartero</p>
+  </div>
+</div>
+
+<!-- MODAL 3 -->
+<div id="modal3" class="modal" onclick="if(event.target.id=='modal3')cerrarModal()">
+  <div class="modal-contenido">
+    <span class="flecha izq" onclick="cambiarModal(-1)">&#10094;</span>
+    <span class="flecha der" onclick="cambiarModal(1)">&#10095;</span>
+    <span class="cerrar" onclick="cerrarModal()">&times;</span>
+    <h2>Estación 3</h2>
+    <h3>ECOPARC • ESTACIONES Y SENDEROS DE INTERPRETACIÓN</h3>
+    <p class="descripcion">Caminar para entender, observar para aprender</p>
+    <p class="mensaje-central">❝ Las estaciones del Agua, la Tierra, el Viento y el Sol. La naturaleza te habla ❞</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==" alt="Ecoparc Senderos" class="imagen-estacion">
+    <p class="pie-foto">Ecoparc Senderos de Interpretación</p>
+  </div>
+</div>
+
+<!-- MODAL 4 -->
+<div id="modal4" class="modal" onclick="if(event.target.id=='modal4')cerrarModal()">
+  <div class="modal-contenido">
+    <span class="flecha izq" onclick="cambiarModal(-1)">&#10094;</span>
+    <span class="flecha der" onclick="cambiarModal(1)">&#10095;</span>
+    <span class="cerrar" onclick="cerrarModal()">&times;</span>
+    <h2>Estación 4</h2>
+    <h3>LA SIEMBRA</h3>
+    <p class="descripcion">Lo que aprendes... lo haces crecer</p>
+    <p class="mensaje-central">❝ El espacio donde la teoría se vuelve acción. Tierra, semillas, manos trabajando. Entiendes que todo lo que recibes debe ser plantado para que viva. Aquí se entiende que somos lo que cultivamos ❞</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==" alt="La Siembra" class="imagen-estacion">
+    <p class="pie-foto">La Siembra</p>
+  </div>
+</div>
+
+<!-- MODAL 5 -->
+<div id="modal5" class="modal" onclick="if(event.target.id=='modal5')cerrarModal()">
+  <div class="modal-contenido">
+    <span class="flecha izq" onclick="cambiarModal(-1)">&#10094;</span>
+    <span class="flecha der" onclick="cambiarModal(1)">&#10095;</span>
+    <span class="cerrar" onclick="cerrarModal()">&times;</span>
+    <h2>Estación 5</h2>
+    <h3>EL BOSQUE DE LA ALEGRÍA ANCESTRAL</h3>
+    <p class="descripcion">Donde nuestros abuelos siguen bailando</p>
+    <p class="mensaje-central">❝ Raíces, música, tambores y la sabiduría que no se escribe, se vive ❞</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==" alt="Bosque Alegría Ancestral" class="imagen-estacion">
+    <p class="pie-foto">Bosque de la Alegría Ancestral</p>
+  </div>
+</div>
+
+<!-- MODAL 6 -->
+<div id="modal6" class="modal" onclick="if(event.target.id=='modal6')cerrarModal()">
+  <div class="modal-contenido">
+    <span class="flecha izq" onclick="cambiarModal(-1)">&#10094;</span>
+    <span class="flecha der" onclick="cambiarModal(1)">&#10095;</span>
+    <span class="cerrar" onclick="cerrarModal()">&times;</span>
+    <h2>Estación 6</h2>
+    <h3>FUENTE DE VIDA • LAGUNA PARAÍSO</h3>
+    <p class="descripcion">El corazón líquido de este lugar</p>
+    <p class="mensaje-central">❝ Calma, reflexión, purificación. El agua que es origen y espejo ❞</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==" alt="Laguna Paraíso" class="imagen-estacion">
+    <p class="pie-foto">Fuente de Vida - Laguna Paraíso</p>
+  </div>
+</div>
+
+<!-- MODAL 7 -->
+<div id="modal7" class="modal" onclick="if(event.target.id=='modal7')cerrarModal()">
+  <div class="modal-contenido">
+    <span class="flecha izq" onclick="cambiarModal(-1)">&#10094;</span>
+    <span class="flecha der" onclick="cambiarModal(1)">&#10095;</span>
+    <span class="cerrar" onclick="cerrarModal()">&times;</span>
+    <h2>Estación 7</h2>
+    <h3>EL FOGÓN DEL CARTERO</h3>
+    <p class="descripcion">Donde la historia se cocina y se comparte</p>
+    <p class="mensaje-central">❝ El fuego que reúne, la comida que alimenta el cuerpo y la conversación que alimenta el alma ❞</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==" alt="Fogón del Cartero" class="imagen-estacion">
+    <p class="pie-foto">El Fogón del Cartero</p>
+  </div>
+</div>
+
+<!-- MODAL 8 -->
+<div id="modal8" class="modal" onclick="if(event.target.id=='modal8')cerrarModal()">
+  <div class="modal-contenido">
+    <span class="flecha izq" onclick="cambiarModal(-1)">&#10094;</span>
+    <span class="flecha der" onclick="cambiarModal(1)">&#10095;</span>
+    <span class="cerrar" onclick="cerrarModal()">&times;</span>
+    <h2>Estación 8</h2>
+    <h3>EL CARTERO DEL PESEBRE</h3>
+    <p class="descripcion">El mensajero que te entrega tu propia vida</p>
+    <p class="mensaje-central">❝ El teatro, la obra de las 10 PM, la Pantalla del Alma. Aquí descubres que tú eres el mensaje ❞</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==" alt="Car tero del Pesebre" class="imagen-estacion">
+    <p class="pie-foto">El Cartero del Pesebre</p>
+  </div>
+</div>
+
+<!-- MODAL 9 -->
+<div id="modal9" class="modal" onclick="if(event.target.id=='modal9')cerrarModal()">
+  <div class="modal-contenido">
+    <span class="flecha izq" onclick="cambiarModal(-1)">&#10094;</span>
+    <span class="flecha der" onclick="cambiarModal(1)">&#10095;</span>
+    <span class="cerrar" onclick="cerrarModal()">&times;</span>
+    <h2>Estación 9</h2>
+    <h3>LA RUEDA DEL TIEMPO SANADOR</h3>
+    <p class="descripcion">Donde el pasado cura el futuro</p>
+    <p class="mensaje-central">❝ Los abuelos, las bibliotecas vivientes, el respeto y la memoria que nos salva ❞</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==" alt="Rueda del Tiempo" class="imagen-estacion">
+    <p class="pie-foto">La Rueda del Tiempo Sanador</p>
+  </div>
+</div>
+
+<!-- MODAL 10 -->
+<div id="modal10" class="modal" onclick="if(event.target.id=='modal10')cerrarModal()">
+  <div class="modal-contenido">
+    <span class="flecha izq" onclick="cambiarModal(-1)">&#10094;</span>
+    <span class="flecha der" onclick="cambiarModal(1)">&#10095;</span>
+    <span class="cerrar" onclick="cerrarModal()">&times;</span>
+    <h2>Estación 10</h2>
+    <h3>EL CIGUAPARK • ECOCOMUNIDAD</h3>
+    <p class="descripcion">El barrio donde vivimos lo que enseñamos</p>
+    <p class="mensaje-central">❝ La prueba final: 91 familias, casas solares, huertos, vida real. Esto es posible. Esto es real. Aquí termina el recorrido y ves el fruto ❞</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==" alt="Ciguapark" class="imagen-estacion">
+    <p class="pie-foto">El Ciguapark - Ecocomunidad</p>
+  </div>
+</div>
+
+<!-- MODAL 11 -->
+<div id="modal11" class="modal" onclick="if(event.target.id=='modal11')cerrarModal()">
+  <div class="modal-contenido">
+    <span class="flecha izq" onclick="cambiarModal(-1)">&#10094;</span>
+    <span class="flecha der" onclick="cambiarModal(1)">&#10095;</span>
+    <span class="cerrar" onclick="cerrarModal()">&times;</span>
+    <h2>Estación 11</h2>
+    <h3>EL UMBRAL DEL REGRESO</h3>
+    <p class="descripcion">El final del camino... el comienzo de tu historia</p>
+    <p class="mensaje-central">❝ El gran libro abierto, el espejo, el juramento. Misión Cumplida... Ahora te toca a ti. Págala al próximo ❞</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==" alt="Umbral del Regreso" class="imagen-estacion">
+    <p class="pie-foto">El Umbral del Regreso</p>
+  </div>
+</div>
+
+<script>
+let modalActual = 1;
+const totalModales = 11;
+
+function abrirModal(n){
+  modalActual = n;
+  document.getElementById('modal'+n).style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+function cerrarModal(){
+  document.getElementById('modal'+modalActual).style.display = 'none';
+  document.body.style.overflow = 'auto';
+}
+
+function cambiarModal(direccion){
+  cerrarModal();
+  modalActual = modalActual + direccion;
+  if(modalActual < 1) modalActual = totalModales;
+  if(modalActual > totalModales) modalActual = 1;
+  abrirModal(modalActual);
+}
+</script>
+
+</body>
+</html>ky
